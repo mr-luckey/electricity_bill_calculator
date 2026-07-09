@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "1097671455586",
+    "project_id": "electricity-bill-calcula-514f0",
+    "storage_bucket": "electricity-bill-calcula-514f0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097671455586:android:1491d2c53dfb4315f0b23b",
+        "android_client_info": {
+          "package_name": "com.appwaretech.meter.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097671455586-2j24talakl3g8oo293so23rdltm4k5ou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appwaretech.meter.app",
+            "certificate_hash": "710411c797e22670837fea6278c498b7b4cfd09e"
+          }
+        },
+        {
+          "client_id": "1097671455586-b1veh4vi8lc3gmleeggivf5d6pe175dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJisPj6WyYMzWzjioBDdgCwxuPrvMKBN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097671455586-b1veh4vi8lc3gmleeggivf5d6pe175dm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097671455586-30dnlcv1q4ht2sldovkfu2ettftfrqc2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.skypiontech.electricitycalculator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1097671455586:android:a5cc3845447eaefcf0b23b",
+        "android_client_info": {
+          "package_name": "com.skypiontech.electricitycalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1097671455586-6kh99otfjpbljf5dl1j8md9mv1l6hgcs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skypiontech.electricitycalculator",
+            "certificate_hash": "52d089892b34170d54797abd473db6266ef630b2"
+          }
+        },
+        {
+          "client_id": "1097671455586-m5n3uhth78knusge07pmugn0vu0r7okr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.skypiontech.electricitycalculator",
+            "certificate_hash": "710411c797e22670837fea6278c498b7b4cfd09e"
+          }
+        },
+        {
+          "client_id": "1097671455586-b1veh4vi8lc3gmleeggivf5d6pe175dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJisPj6WyYMzWzjioBDdgCwxuPrvMKBN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1097671455586-b1veh4vi8lc3gmleeggivf5d6pe175dm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1097671455586-30dnlcv1q4ht2sldovkfu2ettftfrqc2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.skypiontech.electricitycalculator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
