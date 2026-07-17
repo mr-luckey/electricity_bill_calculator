@@ -55,9 +55,7 @@ class MainShell extends StatelessWidget {
               case 0:
                 context.go('/home');
               case 1:
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l10n.historyComingSoon)),
-                );
+                context.go('/history');
               case 2:
                 context.go('/settings');
             }

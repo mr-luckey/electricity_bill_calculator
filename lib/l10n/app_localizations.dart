@@ -618,6 +618,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select a DISCO and category'**
   String get selectDiscoAndCategory;
+
+  /// No description provided for @lastCalculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Calculation'**
+  String get lastCalculation;
+
+  /// No description provided for @recentCalculations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Calculations'**
+  String get recentCalculations;
+
+  /// No description provided for @noCalculationHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No calculations yet'**
+  String get noCalculationHistory;
+
+  /// No description provided for @noCalculationHistorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your last bill estimate will appear here after you calculate.'**
+  String get noCalculationHistorySubtitle;
+
+  /// No description provided for @calculatedOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculated on {date}'**
+  String calculatedOn(String date);
 }
 
 class _AppLocalizationsDelegate

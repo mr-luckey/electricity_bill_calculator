@@ -84,5 +84,10 @@
   "loginSuccess": "خوش آمدید!",
   "loginFailed": "لاگ ان ناکام۔ دوبارہ کوشش کریں۔",
   "otpSent": "OTP آپ کے فون پر بھیج دیا گیا",
-  "selectDiscoAndCategory": "براہ کرم DISCO اور قسم منتخب کریں"
+  "selectDiscoAndCategory": "براہ کرم DISCO اور قسم منتخب کریں",
+  "lastCalculation": "آخری کیلکولیشن",
+  "recentCalculations": "حالیہ کیلکولیشنز",
+  "noCalculationHistory": "ابھی کوئی کیلکولیشن نہیں",
+  "noCalculationHistorySubtitle": "بل کا تخمینہ لگانے کے بعد آپ کی آخری کیلکولیشن یہاں نظر آئے گی۔",
+  "calculatedOn": "کیلکولیشن: {date}"
 }

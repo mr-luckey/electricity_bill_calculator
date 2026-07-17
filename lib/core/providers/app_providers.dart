@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constants/app_constants.dart';
+import '../../data/models/calculation_record.dart';
 import '../../data/models/tariff_model.dart';
+import '../../data/repositories/history_repository.dart';
 import '../../data/repositories/preferences_repository.dart';
 import '../../data/repositories/tariff_repository.dart';
 import '../../data/services/bill_calculator_service.dart';
@@ -12,6 +15,30 @@ import '../../data/services/bill_calculator_service.dart';
 final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
   throw UnimplementedError('SharedPreferences must be overridden in main()');
 });
+
+final historyBoxProvider = Provider<Box<String>>((ref) {
+  throw UnimplementedError('History box must be overridden in main()');
+});
+
+final historyRepositoryProvider = Provider<HistoryRepository>((ref) {
+  return HistoryRepository(ref.watch(historyBoxProvider));
+});
+
+class HistoryNotifier extends StateNotifier<List<CalculationRecord>> {
+  HistoryNotifier(this._repository) : super(_repository.records);
+
+  final HistoryRepository _repository;
+
+  Future<void> save(CalculationRecord record) async {
+    await _repository.saveCalculation(record);
+    state = _repository.records;
+  }
+}
+
+final calculationHistoryProvider =
+    StateNotifierProvider<HistoryNotifier, List<CalculationRecord>>((ref) {
+      return HistoryNotifier(ref.watch(historyRepositoryProvider));
+    });
 
 final preferencesRepositoryProvider = Provider<PreferencesRepository>((ref) {
   return PreferencesRepository(ref.watch(sharedPreferencesProvider));
@@ -95,14 +122,19 @@ class BillSession {
 }
 
 class BillSessionNotifier extends StateNotifier<BillSession> {
-  BillSessionNotifier(this._prefs, this._calculator, this._tariffRepo)
-    : super(const BillSession()) {
+  BillSessionNotifier(
+    this._prefs,
+    this._calculator,
+    this._tariffRepo,
+    this._historyNotifier,
+  ) : super(const BillSession()) {
     _restore();
   }
 
   final PreferencesRepository _prefs;
   final BillCalculatorService _calculator;
   final TariffRepository _tariffRepo;
+  final HistoryNotifier _historyNotifier;
 
   void _restore() {
     state = BillSession(disco: _prefs.lastDisco, category: _prefs.lastCategory);
@@ -135,7 +167,20 @@ class BillSessionNotifier extends StateNotifier<BillSession> {
 
     state = state.copyWith(units: units, result: result);
     await _prefs.incrementCalculationCount();
+    await _historyNotifier.save(CalculationRecord.fromBillBreakdown(result));
     return result;
+  }
+
+  Future<void> restoreFromRecord(CalculationRecord record) async {
+    final breakdown = record.toBillBreakdown();
+    await _prefs.setLastDisco(record.disco);
+    await _prefs.setLastCategory(record.category);
+    state = BillSession(
+      disco: record.disco,
+      category: record.category,
+      units: record.units,
+      result: breakdown,
+    );
   }
 }
 
@@ -145,6 +190,7 @@ final billSessionProvider =
         ref.watch(preferencesRepositoryProvider),
         ref.watch(billCalculatorProvider),
         ref.watch(tariffRepositoryProvider),
+        ref.watch(calculationHistoryProvider.notifier),
       );
     });
 

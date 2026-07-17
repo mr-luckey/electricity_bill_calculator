@@ -288,4 +288,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectDiscoAndCategory => 'Please select a DISCO and category';
+
+  @override
+  String get lastCalculation => 'Last Calculation';
+
+  @override
+  String get recentCalculations => 'Recent Calculations';
+
+  @override
+  String get noCalculationHistory => 'No calculations yet';
+
+  @override
+  String get noCalculationHistorySubtitle =>
+      'Your last bill estimate will appear here after you calculate.';
+
+  @override
+  String calculatedOn(String date) {
+    return 'Calculated on $date';
+  }
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../providers/app_providers.dart';
 import '../../features/auth/email_auth_screen.dart';
 import '../../features/auth/login_screen.dart';
+import '../../features/history/history_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/language/language_selection_screen.dart';
 import '../../features/result/result_screen.dart';
@@ -46,6 +47,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LanguageSelectionScreen(),
       ),
       GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+      GoRoute(
+        path: '/history',
+        builder: (context, state) => const HistoryScreen(),
+      ),
       GoRoute(
         path: '/units',
         builder: (context, state) => const UnitsInputScreen(),

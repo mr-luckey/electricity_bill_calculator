@@ -4,27 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/ads/ad_service.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/constants/disco_info.dart';
 import '../../core/providers/app_providers.dart';
 import '../../shared/extensions/localized_text.dart';
 import '../../shared/widgets/banner_ad_widget.dart';
+import '../../shared/widgets/disco_logo.dart';
 import '../../shared/widgets/main_shell.dart';
 import '../../shared/widgets/primary_button.dart';
-
-// DISCO acronym → full name map
-const _discoFullNames = {
-  'LESCO': 'Lahore Electric Supply',
-  'PESCO': 'Peshawar Electric Supply',
-  'IESCO': 'Islamabad Electric Supply',
-  'MEPCO': 'Multan Electric Power',
-  'GEPCO': 'Gujranwala Electric Power',
-  'FESCO': 'Faisalabad Electric Supply',
-  'HESCO': 'Hyderabad Electric Supply',
-  'SEPCO': 'Sukkur Electric Power',
-  'QESCO': 'Quetta Electric Supply',
-  'TESCO': 'Tribal Area Electric Supply',
-  'HAZECO': 'Hazara Electric Supply',
-  'K-Electric': 'Karachi Electric Supply',
-};
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -376,7 +362,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 ),
                                 const Spacer(),
                                 Text(
-                                  '${AppConstants.discos.length} companies',
+                                  '${DiscoInfo.all.length} companies',
                                   style: theme.textTheme.labelSmall?.copyWith(
                                     color: scheme.onSurface.withValues(
                                       alpha: 0.4,
@@ -389,29 +375,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                           const SizedBox(height: 10),
 
-                          // DISCO Grid
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8,
-                                    crossAxisSpacing: 8,
-                                    childAspectRatio: 2.4,
-                                  ),
-                              itemCount: AppConstants.discos.length,
+                          // DISCO horizontal scroll
+                          SizedBox(
+                            height: 104,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              clipBehavior: Clip.none,
+                              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                              itemCount: DiscoInfo.all.length,
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(width: 10),
                               itemBuilder: (context, index) {
-                                final disco = AppConstants.discos[index];
-                                final selected = _selectedDisco == disco;
+                                final disco = DiscoInfo.all[index];
+                                final selected = _selectedDisco == disco.id;
                                 return _DiscoCard(
                                   disco: disco,
-                                  fullName: _discoFullNames[disco] ?? disco,
                                   selected: selected,
                                   onTap: () =>
-                                      setState(() => _selectedDisco = disco),
+                                      setState(() => _selectedDisco = disco.id),
                                 );
                               },
                             ),
@@ -605,7 +586,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           const SizedBox(height: 20), // Reduced spacing
                           // Calculate Button
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
                             child: SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
@@ -679,13 +660,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 class _DiscoCard extends StatelessWidget {
   const _DiscoCard({
     required this.disco,
-    required this.fullName,
     required this.selected,
     required this.onTap,
   });
 
-  final String disco;
-  final String fullName;
+  final DiscoInfo disco;
   final bool selected;
   final VoidCallback onTap;
 
@@ -698,7 +677,7 @@ class _DiscoCard extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOutCubic,
-      transform: Matrix4.identity()..scale(selected ? 1.02 : 1.0),
+      width: 82,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -707,10 +686,7 @@ class _DiscoCard extends StatelessWidget {
           splashColor: scheme.primary.withValues(alpha: 0.1),
           highlightColor: scheme.primary.withValues(alpha: 0.05),
           child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 12,
-            ), // Reduced padding
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
             decoration: BoxDecoration(
               color: selected
                   ? scheme.primary.withValues(alpha: isDark ? 0.2 : 0.08)
@@ -748,67 +724,23 @@ class _DiscoCard extends StatelessWidget {
                       ),
                     ],
             ),
-            child: Row(
-              // Changed from Column to Row for better space usage
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 32, // Smaller icon container
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: selected
-                        ? scheme.primary
-                        : scheme.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.electrical_services_rounded,
-                    color: selected ? Colors.white : scheme.primary,
-                    size: 16, // Smaller icon
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        disco,
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          // Smaller text
-                          fontWeight: FontWeight.w800,
-                          color: selected ? scheme.primary : null,
-                          letterSpacing: -0.3,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        fullName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: scheme.onSurface.withValues(alpha: 0.4),
-                          fontSize: 8, // Smaller text
-                          letterSpacing: 0.2,
-                        ),
-                      ),
-                    ],
+                DiscoLogo(disco: disco, size: 46, selected: selected),
+                const SizedBox(height: 6),
+                Text(
+                  disco.id,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: selected ? scheme.primary : null,
+                    fontSize: 10,
+                    letterSpacing: -0.2,
                   ),
                 ),
-                if (selected)
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: scheme.primary,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.check_rounded,
-                      color: Colors.white,
-                      size: 12, // Smaller checkmark
-                    ),
-                  ),
               ],
             ),
           ),
@@ -844,7 +776,6 @@ class _CategoryCard extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOutCubic,
-      transform: Matrix4.identity()..scale(selected ? 1.02 : 1.0),
       child: Material(
         color: Colors.transparent,
         child: InkWell(

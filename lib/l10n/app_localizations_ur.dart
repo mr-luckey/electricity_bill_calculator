@@ -287,4 +287,22 @@ class AppLocalizationsUr extends AppLocalizations {
 
   @override
   String get selectDiscoAndCategory => 'براہ کرم DISCO اور قسم منتخب کریں';
+
+  @override
+  String get lastCalculation => 'آخری کیلکولیشن';
+
+  @override
+  String get recentCalculations => 'حالیہ کیلکولیشنز';
+
+  @override
+  String get noCalculationHistory => 'ابھی کوئی کیلکولیشن نہیں';
+
+  @override
+  String get noCalculationHistorySubtitle =>
+      'بل کا تخمینہ لگانے کے بعد آپ کی آخری کیلکولیشن یہاں نظر آئے گی۔';
+
+  @override
+  String calculatedOn(String date) {
+    return 'کیلکولیشن: $date';
+  }
 }

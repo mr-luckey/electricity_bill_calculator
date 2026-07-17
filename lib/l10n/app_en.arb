@@ -116,5 +116,15 @@
   "loginSuccess": "Welcome!",
   "loginFailed": "Login failed. Please try again.",
   "otpSent": "OTP sent to your phone",
-  "selectDiscoAndCategory": "Please select a DISCO and category"
+  "selectDiscoAndCategory": "Please select a DISCO and category",
+  "lastCalculation": "Last Calculation",
+  "recentCalculations": "Recent Calculations",
+  "noCalculationHistory": "No calculations yet",
+  "noCalculationHistorySubtitle": "Your last bill estimate will appear here after you calculate.",
+  "calculatedOn": "Calculated on {date}",
+  "@calculatedOn": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  }
 }
