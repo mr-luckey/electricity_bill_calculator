@@ -24,18 +24,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ConsumerCategory? _selectedCategory;
   var _restoredSession = false;
 
-  @override
-  void initState() {
-    super.initState();
-    AdService.instance.startInterstitialTimer();
-  }
-
-  @override
-  void dispose() {
-    AdService.instance.cancelInterstitialTimer();
-    super.dispose();
-  }
-
   Future<void> _onNext() async {
     final l10n = context.l10n;
     if (_selectedDisco == null || _selectedCategory == null) {
@@ -50,6 +38,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       );
       return;
     }
+
+    final adOutcome = await AdService.instance.showRewardedAdForCalculation();
+    if (!mounted) return;
+
+    if (adOutcome == RewardAdOutcome.dismissed) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            context.isUrdu
+                ? 'آگے بڑھنے کے لیے اشتہار مکمل دیکھیں'
+                : 'Watch the full ad to continue',
+          ),
+        ),
+      );
+      return;
+    }
+
     await ref
         .read(billSessionProvider.notifier)
         .setSelection(disco: _selectedDisco!, category: _selectedCategory!);

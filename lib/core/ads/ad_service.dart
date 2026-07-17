@@ -3,59 +3,49 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'ad_unit_ids.dart';
+
+enum RewardAdOutcome { earned, dismissed, unavailable }
+
 class AdService {
   AdService._();
   static final AdService instance = AdService._();
 
-  /// Try each ID in order until one loads. Add your real unit IDs here.
-  static const bannerAdUnitIds = [
-    'ca-app-pub-5561438827097019/2042222866',
-    'ca-app-pub-5561438827097019/8836685752',
-    'ca-app-pub-5561438827097019/9767870881',
-    'ca-app-pub-5561438827097019/8029046711',
-    'ca-app-pub-5561438827097019/3699909144',
-    // 'ca-app-pub-XXXXXXXX/BBBBBBBBBB',
-    // 'ca-app-pub-XXXXXXXX/CCCCCCCCCC',
-  ];
+  static const interstitialInterval = Duration(seconds: 30);
+  static const retryAfterAllFailed = Duration(seconds: 15);
 
-  static const interstitialAdUnitIds = [
-    'ca-app-pub-5561438827097019/4089801709',
-    'ca-app-pub-5561438827097019/3637576800',
-    'ca-app-pub-5561438827097019/8416059521',
-    'ca-app-pub-5561438827097019/3749257442',
-    'ca-app-pub-5561438827097019/8754172110',
-    // 'ca-app-pub-XXXXXXXX/IIIIIIIIII',
-    // 'ca-app-pub-XXXXXXXX/JJJJJJJJJJ',
-  ];
-
-  static const interstitialShowDelay = Duration(seconds: 30);
-
+  // ─── Interstitial state ───────────────────────────────────────
   InterstitialAd? _interstitialAd;
+  bool _isInterstitialLoading = false;
   bool _isInterstitialReady = false;
-  Timer? _interstitialTimer;
-  bool _interstitialShownThisSession = false;
-  bool _isLoadingInterstitial = false;
+  bool _shouldPrefetchInterstitial = true;
+  Timer? _globalInterstitialTimer;
+  bool _isShowingInterstitial = false;
 
-  // ─── Initialize ───────────────────────────────────────────────
+  // ─── Rewarded state ───────────────────────────────────────────
+  bool _isShowingRewarded = false;
+
   Future<void> initialize() async {
     await MobileAds.instance.initialize();
-    _loadInterstitial(index: 0);
+    _prefetchInterstitial();
+    startGlobalInterstitialTimer();
   }
 
-  // ─── Banner (load all, show first success) ────────────────────
+  // ─── Banner ───────────────────────────────────────────────────
   void loadBanner({
     required void Function(BannerAd ad) onLoaded,
     VoidCallback? onAllFailed,
   }) {
-    if (bannerAdUnitIds.isEmpty) {
+    final ids = AdUnitIds.banner;
+    if (ids.isEmpty) {
       onAllFailed?.call();
       return;
     }
 
     var loaded = false;
-    var pending = bannerAdUnitIds.length;
+    var pending = ids.length;
 
-    for (final adUnitId in bannerAdUnitIds) {
+    for (final adUnitId in ids) {
       BannerAd(
         adUnitId: adUnitId,
         size: AdSize.banner,
@@ -81,90 +71,206 @@ class AdService {
     }
   }
 
-  // ─── Interstitial (try IDs until one loads) ───────────────────
-  void _loadInterstitial({required int index}) {
-    if (_isLoadingInterstitial || _isInterstitialReady) return;
-    if (index >= interstitialAdUnitIds.length) {
-      Future.delayed(interstitialShowDelay, () => _loadInterstitial(index: 0));
+  // ─── Global interstitial (every 30s on all screens) ───────────
+  void startGlobalInterstitialTimer() {
+    _globalInterstitialTimer?.cancel();
+    _globalInterstitialTimer = Timer.periodic(interstitialInterval, (_) {
+      showInterstitialIfReady();
+    });
+  }
+
+  void stopGlobalInterstitialTimer() {
+    _globalInterstitialTimer?.cancel();
+    _globalInterstitialTimer = null;
+  }
+
+  void _prefetchInterstitial() {
+    if (!_shouldPrefetchInterstitial ||
+        _isInterstitialLoading ||
+        _isInterstitialReady ||
+        _isShowingInterstitial) {
+      return;
+    }
+    _loadInterstitialFromIndex(0);
+  }
+
+  void _loadInterstitialFromIndex(int index) {
+    final ids = AdUnitIds.interstitial;
+    if (ids.isEmpty) return;
+
+    if (index >= ids.length) {
+      _isInterstitialLoading = false;
+      Future.delayed(retryAfterAllFailed, () {
+        _shouldPrefetchInterstitial = true;
+        _prefetchInterstitial();
+      });
       return;
     }
 
-    _isLoadingInterstitial = true;
+    _isInterstitialLoading = true;
     InterstitialAd.load(
-      adUnitId: interstitialAdUnitIds[index],
+      adUnitId: ids[index],
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          _isLoadingInterstitial = false;
+          _isInterstitialLoading = false;
           _interstitialAd = ad;
           _isInterstitialReady = true;
+          _shouldPrefetchInterstitial = false;
           ad.setImmersiveMode(true);
         },
-        onAdFailedToLoad: (error) {
-          _isLoadingInterstitial = false;
-          _loadInterstitial(index: index + 1);
+        onAdFailedToLoad: (_) {
+          _isInterstitialLoading = false;
+          _loadInterstitialFromIndex(index + 1);
         },
       ),
     );
   }
 
-  bool get isInterstitialReady => _isInterstitialReady;
-
-  /// Shows interstitial 30 seconds after this is called (once per session).
-  void startInterstitialTimer() {
-    if (_interstitialShownThisSession) return;
-
-    _interstitialTimer?.cancel();
-    _interstitialTimer = Timer(interstitialShowDelay, () {
-      if (_interstitialShownThisSession) return;
-      showInterstitial();
-    });
-  }
-
-  void cancelInterstitialTimer() {
-    _interstitialTimer?.cancel();
-    _interstitialTimer = null;
-  }
-
-  void showInterstitial({VoidCallback? onDismissed}) {
-    if (_interstitialShownThisSession) {
-      onDismissed?.call();
+  void showInterstitialIfReady({VoidCallback? onComplete}) {
+    if (_isShowingInterstitial || _isShowingRewarded) {
+      onComplete?.call();
       return;
     }
 
     if (!_isInterstitialReady || _interstitialAd == null) {
-      onDismissed?.call();
+      onComplete?.call();
+      _prefetchInterstitial();
       return;
     }
 
-    _interstitialShownThisSession = true;
-    _interstitialTimer?.cancel();
+    final ad = _interstitialAd!;
+    _interstitialAd = null;
+    _isInterstitialReady = false;
+    _isShowingInterstitial = true;
+    _shouldPrefetchInterstitial = false;
 
-    _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-      onAdDismissedFullScreenContent: (ad) {
-        ad.dispose();
-        _isInterstitialReady = false;
-        _interstitialAd = null;
-        _loadInterstitial(index: 0);
-        onDismissed?.call();
+    ad.fullScreenContentCallback = FullScreenContentCallback(
+      onAdDismissedFullScreenContent: (dismissedAd) {
+        dismissedAd.dispose();
+        _isShowingInterstitial = false;
+        _shouldPrefetchInterstitial = true;
+        _prefetchInterstitial();
+        onComplete?.call();
       },
-      onAdFailedToShowFullScreenContent: (ad, _) {
-        ad.dispose();
-        _isInterstitialReady = false;
-        _interstitialAd = null;
-        _interstitialShownThisSession = false;
-        _loadInterstitial(index: 0);
-        onDismissed?.call();
+      onAdFailedToShowFullScreenContent: (failedAd, _) {
+        failedAd.dispose();
+        _isShowingInterstitial = false;
+        _shouldPrefetchInterstitial = true;
+        _tryShowInterstitialFromIndex(1, onComplete: onComplete);
       },
     );
 
-    _interstitialAd!.show();
-    _interstitialAd = null;
-    _isInterstitialReady = false;
+    ad.show();
+  }
+
+  void _tryShowInterstitialFromIndex(int index, {VoidCallback? onComplete}) {
+    final ids = AdUnitIds.interstitial;
+    if (index >= ids.length) {
+      _prefetchInterstitial();
+      onComplete?.call();
+      return;
+    }
+
+    if (_isInterstitialLoading) {
+      onComplete?.call();
+      return;
+    }
+
+    _isInterstitialLoading = true;
+    InterstitialAd.load(
+      adUnitId: ids[index],
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          _isInterstitialLoading = false;
+          _interstitialAd = ad;
+          _isInterstitialReady = true;
+          showInterstitialIfReady(onComplete: onComplete);
+        },
+        onAdFailedToLoad: (_) {
+          _isInterstitialLoading = false;
+          _tryShowInterstitialFromIndex(index + 1, onComplete: onComplete);
+        },
+      ),
+    );
+  }
+
+  // ─── Rewarded (on Calculate Bill click) ─────────────────────
+  Future<RewardAdOutcome> showRewardedAdForCalculation() async {
+    if (_isShowingRewarded || _isShowingInterstitial) {
+      return RewardAdOutcome.unavailable;
+    }
+
+    final ids = AdUnitIds.rewarded.where((id) => id.isNotEmpty).toList();
+    if (ids.isEmpty) {
+      return RewardAdOutcome.unavailable;
+    }
+
+    final completer = Completer<RewardAdOutcome>();
+    _loadAndShowRewardedFromIndex(0, ids, completer);
+    return completer.future;
+  }
+
+  void _loadAndShowRewardedFromIndex(
+    int index,
+    List<String> ids,
+    Completer<RewardAdOutcome> completer,
+  ) {
+    if (completer.isCompleted) return;
+
+    if (index >= ids.length) {
+      completer.complete(RewardAdOutcome.unavailable);
+      return;
+    }
+
+    RewardedAd.load(
+      adUnitId: ids[index],
+      request: const AdRequest(),
+      rewardedAdLoadCallback: RewardedAdLoadCallback(
+        onAdLoaded: (ad) {
+          if (completer.isCompleted) {
+            ad.dispose();
+            return;
+          }
+
+          _isShowingRewarded = true;
+          var rewardEarned = false;
+
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (dismissedAd) {
+              dismissedAd.dispose();
+              _isShowingRewarded = false;
+              if (!completer.isCompleted) {
+                completer.complete(
+                  rewardEarned
+                      ? RewardAdOutcome.earned
+                      : RewardAdOutcome.dismissed,
+                );
+              }
+            },
+            onAdFailedToShowFullScreenContent: (failedAd, _) {
+              failedAd.dispose();
+              _isShowingRewarded = false;
+              _loadAndShowRewardedFromIndex(index + 1, ids, completer);
+            },
+          );
+
+          ad.show(
+            onUserEarnedReward: (_, __) {
+              rewardEarned = true;
+            },
+          );
+        },
+        onAdFailedToLoad: (_) {
+          _loadAndShowRewardedFromIndex(index + 1, ids, completer);
+        },
+      ),
+    );
   }
 
   void dispose() {
-    cancelInterstitialTimer();
+    stopGlobalInterstitialTimer();
     _interstitialAd?.dispose();
     _interstitialAd = null;
   }

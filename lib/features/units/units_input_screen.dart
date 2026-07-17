@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/constants/app_constants.dart';
+import '../../core/ads/ad_service.dart';
 import '../../core/providers/app_providers.dart';
 import '../../shared/extensions/localized_text.dart';
 import '../../shared/widgets/primary_button.dart';
@@ -57,6 +58,25 @@ class _UnitsInputScreenState extends ConsumerState<UnitsInputScreen> {
       _error = null;
       _calculating = true;
     });
+
+    final adOutcome = await AdService.instance.showRewardedAdForCalculation();
+
+    if (!mounted) return;
+
+    if (adOutcome == RewardAdOutcome.dismissed) {
+      setState(() => _calculating = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            context.isUrdu
+                ? 'بل کا تخمینہ دیکھنے کے لیے اشتہار مکمل دیکھیں'
+                : 'Watch the full ad to calculate your bill',
+          ),
+        ),
+      );
+      return;
+    }
+
     final result = await ref
         .read(billSessionProvider.notifier)
         .calculate(units);

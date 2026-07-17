@@ -22,7 +22,6 @@ class AppConstants {
       'https://play.google.com/store/apps/details?id=com.skypiontech.electricitycalc';
 
   static const ratesStaleDays = 30;
-  static const interstitialEveryNthCalculation = 3;
 }
 
 enum ConsumerCategory { protected, unprotected }
