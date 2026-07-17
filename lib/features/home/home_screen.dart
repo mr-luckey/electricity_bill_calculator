@@ -72,6 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     final canProceed = _selectedDisco != null && _selectedCategory != null;
+    final topInset = MediaQuery.paddingOf(context).top;
 
     return MainShell(
       currentIndex: 0,
@@ -88,10 +89,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 slivers: [
                   // ── Header with Gradient Background ──────────────────
                   SliverAppBar(
-                    pinned: true,
-                    expandedHeight: 180,
+                    pinned: false,
+                    expandedHeight: topInset + 168,
                     backgroundColor: Colors.transparent,
                     flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.parallax,
                       background: Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -105,8 +107,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         child: SafeArea(
+                          bottom: false,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 20, 24, 20),
+                            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -214,8 +217,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
                   // ── Main Content with Rounded Top ──────────────────
                   SliverToBoxAdapter(
-                    // In the SliverToBoxAdapter section, adjust the padding:
                     child: Container(
+                      margin: const EdgeInsets.only(top: 4),
                       decoration: BoxDecoration(
                         color: theme.scaffoldBackgroundColor,
                         borderRadius: const BorderRadius.only(
