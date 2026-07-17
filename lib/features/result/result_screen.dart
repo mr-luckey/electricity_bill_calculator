@@ -72,7 +72,7 @@ class ResultScreen extends ConsumerWidget {
         title: Text(l10n.estimatedBill),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/home'),
         ),
         actions: [
           IconButton(
@@ -377,6 +377,31 @@ class ResultScreen extends ConsumerWidget {
                   ],
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                onPressed: () => context.go('/home'),
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                icon: const Icon(Icons.home_rounded, size: 20),
+                label: Text(
+                  l10n.home,
+                  style: context.localizedStyle(
+                    theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
           const BannerAdWidget(),
