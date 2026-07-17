@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     // START: FlutterFire Configuration
-    id("com.google.gms.goocom.appwaretech.meter.appgle-services")
+    id("com.google.gms.google-services")
     // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = ""
+    namespace = "com.appwaretech.meter.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

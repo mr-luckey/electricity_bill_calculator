@@ -5,50 +5,32 @@ class AppLogo extends StatelessWidget {
 
   final double size;
 
+  static const _assetPath = 'assets/images/app_logo.png';
+
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF00897B), Color(0xFF004D40)],
-        ),
-        borderRadius: BorderRadius.circular(size * 0.26),
+        borderRadius: BorderRadius.circular(size * 0.22),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF00897B).withValues(alpha: isDark ? 0.45 : 0.30),
-            blurRadius: size * 0.4,
-            offset: Offset(0, size * 0.12),
+            color: const Color(0xFF00897B).withValues(alpha: isDark ? 0.35 : 0.22),
+            blurRadius: size * 0.28,
+            offset: Offset(0, size * 0.1),
           ),
         ],
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Decorative circle
-          Positioned(
-            top: -size * 0.12,
-            right: -size * 0.12,
-            child: Container(
-              width: size * 0.5,
-              height: size * 0.5,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.07),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Icon(
-            Icons.bolt_rounded,
-            color: Colors.white,
-            size: size * 0.52,
-          ),
-        ],
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size * 0.22),
+        child: Image.asset(
+          _assetPath,
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

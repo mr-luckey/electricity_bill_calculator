@@ -44,3 +44,4 @@ flutter:
   generate: true
   assets:
     - assets/data/default_tariffs.json
+    - assets/images/app_logo.png
