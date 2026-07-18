@@ -4,21 +4,21 @@ class AdUnitIds {
   AdUnitIds._();
 
   static const banner = [
-    'ca-app-pub-5561438827097019/2042222866',
-    'ca-app-pub-5561438827097019/8836685752',
-    'ca-app-pub-5561438827097019/9767870881',
-    'ca-app-pub-5561438827097019/8029046711',
-    'ca-app-pub-5561438827097019/3699909144',
+    'ca-app-pub-5561438827097019/4742739521',
+    'ca-app-pub-5561438827097019/5810233015',
+    'ca-app-pub-5561438827097019/9803494514',
+    'ca-app-pub-5561438827097019/5564866604',
+    'ca-app-pub-5561438827097019/7454487173',
     // Add more banner IDs below:
     // 'ca-app-pub-XXXXXXXX/BBBBBBBBBB',
   ];
 
   static const interstitial = [
-    'ca-app-pub-5561438827097019/4089801709',
-    'ca-app-pub-5561438827097019/3637576800',
-    'ca-app-pub-5561438827097019/8416059521',
-    'ca-app-pub-5561438827097019/3749257442',
-    'ca-app-pub-5561438827097019/8754172110',
+    'ca-app-pub-5561438827097019/4828323831',
+    'ca-app-pub-5561438827097019/1684532587',
+    'ca-app-pub-5561438827097019/4034116918',
+    'ca-app-pub-5561438827097019/2726151516',
+    'ca-app-pub-5561438827097019/1925004498',
     // Add more interstitial IDs below:
     // 'ca-app-pub-XXXXXXXX/IIIIIIIIII',
   ];
@@ -28,6 +28,10 @@ class AdUnitIds {
     // 'ca-app-pub-5561438827097019/RRRRRRRRRR',
     // 'ca-app-pub-5561438827097019/SSSSSSSSSS',
     // Google test rewarded ID (works in debug):
-    'ca-app-pub-3940256099942544/5224354917',
+    'ca-app-pub-5561438827097019/8631837476',
+    'ca-app-pub-5561438827097019/9099988170',
+    'ca-app-pub-5561438827097019/2806042560',
+    'ca-app-pub-5561438827097019/6473824838',
+    'ca-app-pub-5561438827097019/8575997150',
   ];
 }
