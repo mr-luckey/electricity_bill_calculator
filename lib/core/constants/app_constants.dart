@@ -14,12 +14,12 @@ class AppConstants {
     'K-Electric',
   ];
 
-  static const feedbackWhatsappNumber = '923369021774';
-  static const feedbackEmail = 'support@skypiontech.com';
+  static const feedbackWhatsappNumber = '+923178831523';
+  static const feedbackEmail = 'contact@appwaretech.com';
   static const privacyPolicyUrl =
-      'https://bytereviewer.com/electricity-bill-calculator-privacy-policy';
+      'https://drive.google.com/file/d/1VxKfrv1y1eiPkmT1RSF18p_XM2F48oza/view?usp=sharing';
   static const playStoreUrl =
-      'https://play.google.com/store/apps/details?id=com.skypiontech.electricitycalc';
+      'https://play.google.com/store/apps/details?id=com.appwaretech.meter.app';
 
   static const ratesStaleDays = 30;
 }

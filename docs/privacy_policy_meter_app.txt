@@ -1,0 +1,191 @@
+PRIVACY POLICY
+Meter App – Pakistan Electricity Bill Calculator
+
+Effective date: July 18, 2026
+Last updated: July 18, 2026
+
+================================================================================
+1. INTRODUCTION
+================================================================================
+
+Welcome to Meter App ("App", "we", "us", or "our"), operated by Skypion Tech.
+This Privacy Policy explains how we collect, use, store, and share information
+when you use Meter App on Android or iOS.
+
+Meter App helps users estimate residential electricity bills for major Pakistani
+distribution companies (DISCOs) based on publicly available tariff data. By using
+the App, you agree to this Privacy Policy. If you do not agree, please do not use
+the App.
+
+================================================================================
+2. INFORMATION WE COLLECT
+================================================================================
+
+2.1 Account & authentication information
+
+Depending on how you sign in, we may collect:
+
+- Google Sign-In: name, email address, and Google account identifier provided by Google.
+- Email authentication: email address and authentication credentials managed by Firebase Authentication.
+- Guest / anonymous sign-in: a temporary anonymous user ID (no name or email required).
+
+2.2 App usage & calculation data
+
+- Selected DISCO (electricity company) and consumer category.
+- Units (kWh) entered for bill estimates.
+- Estimated bill breakdown and related calculation history stored on your device.
+- App preferences such as language and theme.
+
+2.3 Device & technical information
+
+- Device type, operating system, and app version.
+- Crash logs and performance diagnostics (via Firebase Crashlytics).
+- Basic analytics events (via Firebase Analytics), such as app opens and feature usage.
+- Advertising identifiers used by Google Mobile Ads (AdMob) for ad delivery and measurement.
+
+2.4 Information we do not collect
+
+- We do not collect your official electricity bill PDF or meter photos.
+- We do not require your DISCO consumer number, CNIC, or payment card details to use the calculator.
+- Bill estimates are informational only and are not linked to your utility account.
+
+================================================================================
+3. HOW WE USE YOUR INFORMATION
+================================================================================
+
+We use the information described above to:
+
+- Provide and improve bill estimation features.
+- Create and manage your account (including guest sessions).
+- Save calculation history and preferences on your device.
+- Sync limited profile data (such as display name and login method) when you are signed in.
+- Show advertisements (banner, interstitial, and rewarded ads).
+- Monitor app stability, fix bugs, and understand feature usage.
+- Respond to feedback or support requests you send us.
+- Comply with legal obligations where applicable.
+
+================================================================================
+4. LOCAL STORAGE
+================================================================================
+
+Meter App stores certain data locally on your device using technologies such as
+SharedPreferences and Hive, including:
+
+- Language and theme settings.
+- Last selected DISCO and category.
+- Recent bill calculation history.
+- Session-related preferences.
+
+Uninstalling the App or clearing app data typically removes this local information.
+
+================================================================================
+5. THIRD-PARTY SERVICES
+================================================================================
+
+We use trusted third-party services that may process data under their own policies:
+
+- Google Firebase (Authentication, Cloud Firestore, Analytics, Crashlytics, Remote Config)
+  Privacy: https://firebase.google.com/support/privacy
+
+- Google Sign-In
+  Privacy: https://policies.google.com/privacy
+
+- Google AdMob / Google Mobile Ads
+  Advertising data: https://policies.google.com/technologies/ads
+
+These services may collect device identifiers, IP address, and usage data to provide
+authentication, analytics, crash reporting, remote configuration, and advertising.
+
+================================================================================
+6. ADVERTISING
+================================================================================
+
+Meter App displays ads through Google AdMob, which may include banner, interstitial,
+and rewarded advertisements. Ad networks may use cookies, advertising IDs, or similar
+technologies to serve personalized or non-personalized ads and to measure performance.
+
+You can usually limit ad personalization through your device settings (for example,
+"Opt out of Ads Personalization" on Android, or App Tracking / Limited Ad Tracking
+options on iOS).
+
+================================================================================
+7. DATA SHARING
+================================================================================
+
+We do not sell your personal information. We may share data only:
+
+- With service providers listed above as needed to operate the App.
+- When you choose to share a bill estimate using your device's share sheet.
+- If required by law, regulation, legal process, or to protect rights and safety.
+- In connection with a business transfer (merger, acquisition, or asset sale), if applicable.
+
+================================================================================
+8. DATA RETENTION
+================================================================================
+
+- On-device data: retained until you clear app data or uninstall the App.
+- Account / cloud profile data: retained while your account remains active, or until deleted according to our support process.
+- Analytics & crash data: retained according to Google Firebase / AdMob retention practices.
+
+================================================================================
+9. CHILDREN'S PRIVACY
+================================================================================
+
+Meter App is not directed to children under 13 (or the minimum age required in your
+country). We do not knowingly collect personal information from children. If you believe
+a child has provided us personal data, contact us and we will take appropriate steps to
+delete it.
+
+================================================================================
+10. SECURITY
+================================================================================
+
+We take reasonable technical and organizational measures to protect information processed
+through the App. However, no method of electronic storage or transmission is 100% secure,
+and we cannot guarantee absolute security.
+
+================================================================================
+11. YOUR CHOICES & RIGHTS
+================================================================================
+
+Depending on your location, you may have rights to:
+
+- Access, correct, or delete certain personal information.
+- Withdraw consent where processing is based on consent.
+- Opt out of personalized advertising via device settings.
+- Sign out or stop using the App at any time.
+
+To request account-related deletion or privacy assistance, contact us at the email below.
+
+================================================================================
+12. DISCLAIMER
+================================================================================
+
+Bill estimates generated by Meter App are approximate and based on publicly available
+tariff information (including NEPRA-related rate data where applicable). Actual bills may
+differ due to taxes, fuel price adjustments, billing cycles, meter readings, or
+DISCO-specific charges. Meter App is not affiliated with WAPDA, PEPCO, NEPRA, or any
+electricity distribution company.
+
+================================================================================
+13. CHANGES TO THIS POLICY
+================================================================================
+
+We may update this Privacy Policy from time to time. The "Last updated" date at the top
+will change when we do. Continued use of Meter App after updates means you accept the
+revised policy.
+
+================================================================================
+14. CONTACT US
+================================================================================
+
+If you have questions about this Privacy Policy or Meter App, contact:
+
+App:         Meter App
+Developer:   Skypion Tech
+Email:       support@skypiontech.com
+Package ID:  com.appwaretech.meter.app
+
+================================================================================
+
+© 2026 Skypion Tech · Meter App · All rights reserved.
